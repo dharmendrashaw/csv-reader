@@ -3,6 +3,7 @@ package com.test;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import com.test.data.CSVData;
+import com.test.data.CSVDataStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,20 @@ public class CSVParser {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (CsvException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public CSVDataStream readCSVFromURLToStream(String urlToRead) {
+        LOGGER.info("Reading CSV file from URL {} to DataStream ", urlToRead);
+
+        try {
+            URL url = new URL(urlToRead);
+            CSVReader csvReader = new CSVReader(new InputStreamReader(url.openStream()));
+            return new CSVDataStream(csvReader);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
